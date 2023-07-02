@@ -3,15 +3,16 @@ import { Router } from "express";
 const router = Router();
 const db = require("../database");
 
-router.post("/", (req, res) => {
-  const location = req.body;
-  if (!location) return res.status(400).send("Location required.");
+router.post("/newLocation", (req, res) => {
+  const { name } = req.body;  
+  if (!name) return res.status(400).send("Name required.");
+
   db.query(
     `
-    INSERT INTO locations (location) 
-    VALUES ($1, $2)
+    INSERT INTO locations (name)  
+    VALUES ($1, $2) 
     `,
-    location
+    [name]    
   );
 
   res.status(201).json("Location added");

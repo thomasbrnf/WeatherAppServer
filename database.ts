@@ -8,9 +8,9 @@ const db = new sqlite3.Database(
 
 export function initialiseTable() {
   db.run(`CREATE TABLE IF NOT EXISTS locations (
-        id: number PRIMARY KEY,
-        name: string NOT NULL,  
-        openweather_api_name: string NOT NULL,
+        id number PRIMARY KEY,
+        name string NOT NULL,  
+        openweather_api_name string NOT NULL,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )`);
 }
@@ -20,4 +20,4 @@ function handleError(err: Error | null) {
   console.log("Connected to the SQLite database.");
 }
 
-module.exports = db;
+export { db };
