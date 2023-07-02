@@ -1,14 +1,14 @@
 import { initialiseTable } from "./database";
-import express from "express";
 
 require("dotenv").config();
 
+const express = require('express');
 const app = express();
 
-const locationsRouter = require("./locations");
-const specificLocationRouter = require("./specificLocation");
-const newLocationRouter = require("./newLocation");
-const weatherDataRouter = require("./weatherData");
+const locationsRouter = require("./endpoints/locations");
+const specificLocationRouter = require("./endpoints/specificLocation");
+const newLocationRouter = require("./endpoints/newLocation");
+const weatherDataRouter = require("./endpoints/weatherData");
 
 const port = process.env.PORT;
 

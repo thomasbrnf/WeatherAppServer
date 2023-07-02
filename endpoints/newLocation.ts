@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 const router = Router();
-const db = require("./database");
+const db = require("../database");
 
 router.post("/", (req, res) => {
   const location = req.body;

@@ -15,7 +15,7 @@ export function initialiseTable() {
         )`);
 }
 
-function handleError(err) {
+function handleError(err: Error | null) {
   if (err) console.error(err.message);
   console.log("Connected to the SQLite database.");
 }
