@@ -1,10 +1,8 @@
-import { initialiseTable } from "./database";
-
+import { initialiseTable } from "./database/database";
 require("dotenv").config();
 
 const express = require('express');
 const app = express();
-
 const locationsRouter = require("./endpoints/locations");
 const specificLocationRouter = require("./endpoints/specificLocation");
 const newLocationRouter = require("./endpoints/newLocation");
@@ -14,10 +12,10 @@ const port = process.env.PORT;
 
 initialiseTable();
 
-app.use("/locations", locationsRouter);
-app.use("/specificLocation", specificLocationRouter);
-app.use("/newLocation", newLocationRouter);
-app.use("/weatherData", weatherDataRouter);
+app.use("/api", locationsRouter);
+app.use("/api", specificLocationRouter);
+app.use("/api", newLocationRouter);
+app.use("/api", weatherDataRouter);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

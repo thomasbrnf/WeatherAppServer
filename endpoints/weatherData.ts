@@ -1,37 +1,36 @@
-import { AxiosError } from "axios";
-import { Router } from "express";
-
+import axios from "axios";
+import express, { Router } from "express";
+import { db } from "../database/database";
 require("dotenv").config();
 
-const axios = require("axios");
 const router = Router();
-const db = require("../database");
 const apiKey = process.env.OPEN_WEATHER_API_KEY;
 
-router.get("/locations/:id", (req, res) => {
+router.use(express.json());
+router.get("/locationsData/:id", (req, res) => {
   const id = req.params.id;
-  getLocationApiName(id)
-    .then(getWeatherData)
-    .then((weatherData: any) => res.json(weatherData));
-});
+  const sql = "SELECT openweather_api_name FROM locations WHERE id = ?";
 
-function getLocationApiName(id: string) {
-  const sql = "SELECT openweather_api_name FROM locations WHERE id =?";
+  db.all(sql, [id], (err: Error, row: any[]) => {
+    if (err) console.log(err)
+    else {
+      const apiName = row[0].openweather_api_name;
 
-  return db.query(sql, [id]).then((result: any[]) => result[0].openweather_api_name);
-}
-
-function getWeatherData(apiName: string) {
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${apiName}&appid=${apiKey}`;
-
-  return axios
-    .get(url)
-    .then((response: any) => response.data)
-    .catch((error: AxiosError) => {
-      if (error.response!.status === 404) {
-        throw new Error("Location not found");
-      }
-    });
-}
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${apiName}&appid=${apiKey}`
+      axios.get(url)
+        .then((response: any) => {
+          const weatherData = response.data;
+          res.json(weatherData);
+        })
+        .catch((error: any) => {
+          if (error.response.status === 404) {
+            res.status(404).json({
+              error: 'Location not found'
+            });  
+          }
+        });
+    }
+  });  
+})
 
 module.exports = router;

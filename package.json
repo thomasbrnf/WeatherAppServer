@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "start": "node server.js"
+    "start": "ts-node server.ts"
   },
   "repository": {
     "type": "git",
@@ -19,8 +19,10 @@
   "dependencies": {
     "@types/sqlite3": "^3.1.8",
     "axios": "^1.4.0",
+    "body-parser": "^1.20.2",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "knex": "^2.4.2",
     "sqlite3": "^5.1.6"
   },
   "devDependencies": {
