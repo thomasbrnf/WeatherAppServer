@@ -1,22 +1,23 @@
 import express, { Response } from "express";
-import { db } from "../database/database";
+import { handleDbErrors } from "../utilities/middleware";
+import { db } from "../utilities/database";
 
 const router = express.Router();
+const sql = "SELECT * FROM locations";
 
 router.use(express.json());
+
 router.get('/locations', (req, res: Response) => {
-  const sql = "SELECT * FROM locations";
-  try {
     db.all(sql, (err: Error, rows: any[]) => {
       if (err) {
-        res.status(500).json({ error: err.message })
+        handleDbErrors
       } else {
-        res.json(rows)
+        sendLocations
       }   
     });
-  } catch (err) {
-    console.error((err as any).message);
-  }
 });
+function sendLocations(rows: any[], res: Response){
+  res.json(rows);
+}
 
-module.exports = router;
+export { router as locationsRouter }

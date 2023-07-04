@@ -1,16 +1,19 @@
 import axios from "axios";
 import express, { Router } from "express";
-import { db } from "../database/database";
-require("dotenv").config();
+import { db } from "../utilities/database";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const router = Router();
 const apiKey = process.env.OPEN_WEATHER_API_KEY;
+const sql = "SELECT openweather_api_name FROM locations WHERE id = ?";
 
 router.use(express.json());
+
 router.get("/locationsData/:id", (req, res) => {
   const id = req.params.id;
-  const sql = "SELECT openweather_api_name FROM locations WHERE id = ?";
-
+  
   db.all(sql, [id], (err: Error, row: any[]) => {
     if (err) console.log(err)
     else {
@@ -33,4 +36,4 @@ router.get("/locationsData/:id", (req, res) => {
   });  
 })
 
-module.exports = router;
+export { router as weatherDataRouter }

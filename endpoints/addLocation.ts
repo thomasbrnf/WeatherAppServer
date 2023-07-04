@@ -1,20 +1,22 @@
 import express, { Request, Response } from "express";
-import { db } from "../database/database";
+import { handleDbErrors } from "../utilities/middleware";
+import { db } from "../utilities/database";
 
 const router = express.Router();
 
 router.use(express.json());
-router.post("/newLocation", (req: Request, res: Response) => {  
+
+router.post("/addLocation", (req: Request, res: Response) => {  
   const { name } = req.body;    
   if (!name) return res.status(400).send("Name required.");
+
   db.run(
     `INSERT INTO locations (name, openweather_api_name) 
     VALUES (?, ?)`,    
     [name, name],    
     (err: Error) => {      
       if (err) {
-        console.error(err.message);
-        res.status(500).send("Error adding location");
+        handleDbErrors
       } else {
         res.status(201).json("Location added");
       }
@@ -22,4 +24,4 @@ router.post("/newLocation", (req: Request, res: Response) => {
   );
 });
 
-module.exports = router;
+export { router as addLocationRouter }

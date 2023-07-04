@@ -1,9 +1,10 @@
-import express, { Request, Response, Router } from "express";
-import { db } from "../database/database";
+import express, { Router } from "express";
+import { db } from "../utilities/database";
 
 const router = Router();
 
 router.use(express.json());
+
 router.get('/locations/:id', (req, res) => {
   const { id } = req.params;
 
@@ -16,4 +17,4 @@ router.get('/locations/:id', (req, res) => {
   })
 })
 
-module.exports = router;
+export { router as specificLocationRouter }
