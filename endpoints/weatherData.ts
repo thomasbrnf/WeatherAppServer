@@ -1,7 +1,8 @@
 import axios from "axios";
 import express, { Router } from "express";
+import { handleDbErrors } from "../utilities/middleware";
 import { db } from "../utilities/database";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -11,29 +12,35 @@ const sql = "SELECT openweather_api_name FROM locations WHERE id = ?";
 
 router.use(express.json());
 
-router.get("/locationsData/:id", (req, res) => {
+router.get("/weatherData/:id", async (req, res) => {
   const id = req.params.id;
-  
-  db.all(sql, [id], (err: Error, row: any[]) => {
-    if (err) console.log(err)
-    else {
-      const apiName = row[0].openweather_api_name;
 
-      const url = `https://api.openweathermap.org/data/2.5/weather?q=${apiName}&appid=${apiKey}`
-      axios.get(url)
-        .then((response: any) => {
-          const weatherData = response.data;
-          res.json(weatherData);
-        })
-        .catch((error: any) => {
-          if (error.response.status === 404) {
-            res.status(404).json({
-              error: 'Location not found'
-            });  
-          }
-        });
-    }
-  });  
-})
+  try {
+    const apiName = await getApiName(id);
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${apiName}&appid=${apiKey}`;
 
-export { router as weatherDataRouter }
+    const { data: weatherData } = await axios.get(url);
+    res.json(weatherData);
+  } catch (error) {
+    handleDbErrors(error, res);
+  }
+});
+
+function getApiName(id: string) {
+  return new Promise((resolve, reject) => {
+    db.all(sql, [id], (err, rows) => {
+      if (err) reject(err);
+      else {
+        const apiName = getApiNameFromRow(rows);
+        resolve(apiName);
+      }
+    });
+  });
+}
+
+function getApiNameFromRow(rows: any[]) {
+  const row = rows[0] || ({ openweather_api_name: null } as any);
+  return row.openweather_api_name;
+}
+
+export { router as weatherDataRouter };

@@ -2,13 +2,13 @@ import { initialiseTable } from "./database";
 import { Request, Response, NextFunction } from "express";
 
 export function initialiseDatabase(
-  req: Request, 
+  req: Request,
   res: Response,
   next: NextFunction
 ) {
-    initialiseTable();
-    next(); 
+  initialiseTable();
+  next();
 }
-export function handleDbErrors(err: Error, res: Response, next: NextFunction) {
+export function handleDbErrors(err: any, res: Response) {
   res.status(500).json({ error: err.message });
 }

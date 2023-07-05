@@ -6,22 +6,35 @@ const router = express.Router();
 
 router.use(express.json());
 
-router.post("/addLocation", (req: Request, res: Response) => {  
-  const { name } = req.body;    
-  if (!name) return res.status(400).send("Name required.");
+router.post("/addLocation", async (req, res) => {
+  const { name } = req.body;
 
-  db.run(
-    `INSERT INTO locations (name, openweather_api_name) 
-    VALUES (?, ?)`,    
-    [name, name],    
-    (err: Error) => {      
-      if (err) {
-        handleDbErrors
-      } else {
-        res.status(201).json("Location added");
-      }
-    }
-  );
+  try {
+    validateLocation(name);
+
+    await addLocation(name);
+    res.status(201).json("Location added");
+  } catch (err) {
+    handleDbErrors(err, res);
+  }
 });
 
-export { router as addLocationRouter }
+function validateLocation(name: string) {
+  if (!name) throw new Error("Name is required");
+}
+
+async function addLocation(name: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    db.run(
+      `INSERT INTO locations (name, openweather_api_name) 
+       VALUES (?, ?)`,
+      [name, name],
+      (err) => {
+        if (err) reject(err);
+        else resolve();
+      }
+    );
+  });
+}
+
+export { router as addLocationRouter };

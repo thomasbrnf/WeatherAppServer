@@ -1,4 +1,4 @@
-import express from 'express';
+import express from "express";
 const router = express.Router();
 
 import { locationsRouter } from "../endpoints/locations";
@@ -13,4 +13,4 @@ router.use(weatherDataRouter);
 // POST
 router.use(addLocationRouter);
 
-export { router }
+export { router };

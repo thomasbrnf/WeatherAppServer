@@ -7,17 +7,26 @@ const sql = "SELECT * FROM locations";
 
 router.use(express.json());
 
-router.get('/locations', (req, res: Response) => {
-    db.all(sql, (err: Error, rows: any[]) => {
-      if (err) {
-        handleDbErrors
-      } else {
-        sendLocations
-      }   
-    });
+router.get("/locations", async (req, res: Response) => {
+  try {
+    const rows = (await getLocations()) as any[];
+    sendLocations(res, rows);
+  } catch (err) {
+    handleDbErrors(err, res);
+  }
 });
-function sendLocations(rows: any[], res: Response){
+
+function sendLocations(res: Response, rows: any[]) {
   res.json(rows);
 }
 
-export { router as locationsRouter }
+function getLocations() {
+  return new Promise((resolve, reject) => {
+    db.all(sql, (err, rows) => {
+      if (err) reject(err);
+      else resolve(rows);
+    });
+  });
+}
+
+export { router as locationsRouter };
