@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import { handleDbErrors } from "../utilities/middleware";
 import { db } from "../utilities/database";
 
@@ -32,7 +32,7 @@ async function addLocation(name: string): Promise<void> {
       (err) => {
         if (err) reject(err);
         else resolve();
-      }
+      },
     );
   });
 }

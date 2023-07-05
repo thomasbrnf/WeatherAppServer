@@ -3,7 +3,7 @@ import * as sqlite3 from "sqlite3";
 export const db = new sqlite3.Database(
   "./database.db",
   sqlite3.OPEN_READWRITE,
-  handleError
+  handleError,
 );
 export function initialiseTable() {
   db.run(`CREATE TABLE IF NOT EXISTS locations (
