@@ -1,8 +1,8 @@
 import axios from "axios";
-import express, { Router } from "express";
-import { handleDbErrors } from "../utilities/middleware";
-import { db } from "../utilities/database";
 import dotenv from "dotenv";
+import express, { Router } from "express";
+import { handleErrors } from "../utilities/middleware";
+import { db } from "../utilities/database";
 
 dotenv.config();
 
@@ -18,11 +18,11 @@ router.get("/weatherData/:id", async (req, res) => {
   try {
     const apiName = await getApiName(id);
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${apiName}&appid=${apiKey}`;
-
+    
     const { data: weatherData } = await axios.get(url);
     res.json(weatherData);
   } catch (error) {
-    handleDbErrors(error, res);
+    handleErrors(error, res);
   }
 });
 

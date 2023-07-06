@@ -1,10 +1,9 @@
 import express from "express";
-const router = express.Router();
-
 import { locationsRouter } from "../endpoints/locations";
 import { specificLocationRouter } from "../endpoints/specificLocation";
 import { weatherDataRouter } from "../endpoints/weatherData";
 import { addLocationRouter } from "../endpoints/addLocation";
+const router = express.Router();
 
 // GET
 router.use(locationsRouter);
@@ -13,4 +12,4 @@ router.use(weatherDataRouter);
 // POST
 router.use(addLocationRouter);
 
-export { router };
+export { router as protectedRouter };

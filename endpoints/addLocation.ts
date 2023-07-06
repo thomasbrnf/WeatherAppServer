@@ -1,5 +1,5 @@
 import express from "express";
-import { handleDbErrors } from "../utilities/middleware";
+import { handleErrors } from "../utilities/middleware";
 import { db } from "../utilities/database";
 
 const router = express.Router();
@@ -15,7 +15,7 @@ router.post("/addLocation", async (req, res) => {
     await addLocation(name);
     res.status(201).json("Location added");
   } catch (err) {
-    handleDbErrors(err, res);
+    handleErrors(err, res);
   }
 });
 

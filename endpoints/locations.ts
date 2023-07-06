@@ -1,5 +1,5 @@
 import express, { Response } from "express";
-import { handleDbErrors } from "../utilities/middleware";
+import { handleErrors } from "../utilities/middleware";
 import { db } from "../utilities/database";
 
 const router = express.Router();
@@ -12,7 +12,7 @@ router.get("/locations", async (req, res: Response) => {
     const rows = (await getLocations()) as any[];
     sendLocations(res, rows);
   } catch (err) {
-    handleDbErrors(err, res);
+    handleErrors(err, res);
   }
 });
 

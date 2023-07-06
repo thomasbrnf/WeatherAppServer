@@ -1,5 +1,5 @@
 import express, { Router } from "express";
-import { handleDbErrors } from "../utilities/middleware";
+import { handleErrors } from "../utilities/middleware";
 import { db } from "../utilities/database";
 
 const router = Router();
@@ -14,7 +14,7 @@ router.get("/locations/:id", async (req, res) => {
     const row = (await getLocation(id)) as any[];
     sendLocation(res, row);
   } catch (err) {
-    handleDbErrors(err, res);
+    handleErrors(err, res);
   }
 });
 
