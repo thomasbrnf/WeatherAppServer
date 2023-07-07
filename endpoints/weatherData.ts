@@ -18,7 +18,7 @@ router.get("/weatherData/:id", async (req, res) => {
   try {
     const apiName = await getApiName(id);
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${apiName}&appid=${apiKey}`;
-    
+
     const { data: weatherData } = await axios.get(url);
     res.json(weatherData);
   } catch (error) {

@@ -21,7 +21,7 @@ export function initialiseUsersTable() {
     username string NOT NULL,
     password string NOT NULL,
     salt string NOT NULL 
-  )`)
+  )`);
 }
 
 function handleError(err: Error | null) {
