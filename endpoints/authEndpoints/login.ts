@@ -39,14 +39,9 @@ function validateLogin(
 ) {
   if (hashed == hashedPassword) {
     const token = jwt.sign({ username }, jwtSecret);
-    res
-      .cookie("token", token, {
-        httpOnly: true,
-        expires: new Date(Date.now() + 3600000),
-      })
-      .send();
+    res.cookie("token", token, { httpOnly: true }).send();
   } else {
-    res.status(201).json("Wrong password");
+    res.status(422).json("Wrong password");
   }
 }
 
