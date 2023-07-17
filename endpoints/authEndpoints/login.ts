@@ -39,7 +39,11 @@ function validateLogin(
 ) {
   if (hashed == hashedPassword) {
     const token = jwt.sign({ username }, jwtSecret);
-    res.cookie("token", token, { httpOnly: true }).send();
+    res.status(201).json({
+      success: true,
+      message: "User authenticated successfully!",
+      token: token,
+    });
   } else {
     res.status(422).json("Wrong password");
   }

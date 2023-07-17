@@ -8,6 +8,7 @@ const router = express.Router();
 router.use(express.json());
 
 router.post("/register", async (req, res) => {
+  console.log(req);
   try {
     const { username, password } = req.body;
     const { salt, hashedPassword } = await hashPassword(password);

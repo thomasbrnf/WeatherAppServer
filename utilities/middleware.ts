@@ -7,7 +7,8 @@ dotenv.config();
 const jwtSecret = process.env.JWT_SECRET!;
 
 export function authenticateToken(req: any, res: Response, next: NextFunction) {
-  const token = req.cookies.token;
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
 
   if (token) {
     jwt.verify(token, jwtSecret, (err: any, user: any) => {

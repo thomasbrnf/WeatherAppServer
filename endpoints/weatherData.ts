@@ -12,7 +12,7 @@ const sql = "SELECT openweather_api_name FROM locations WHERE id = ?";
 
 router.use(express.json());
 
-router.get("/weatherData/:id", async (req, res) => {
+router.get("/weather/:id", async (req, res) => {
   const id = req.params.id;
 
   try {

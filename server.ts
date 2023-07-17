@@ -1,3 +1,4 @@
+import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import compression from "compression";
@@ -18,6 +19,7 @@ const port = process.env.PORT;
 initialiseUsersTable();
 initialiseLocationsTable();
 
+app.use(cors());
 app.use(compression());
 app.use(cookieParser());
 

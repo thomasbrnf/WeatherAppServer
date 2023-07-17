@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.use(express.json());
 
-router.post("/addLocation", async (req, res) => {
+router.post("/add-location", async (req, res) => {
   const { name } = req.body;
 
   try {
